@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de estudiantes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+<div class="wrap">
+    <nav class="nav">
+        <a href="/estudiantes.html">Registrar</a>
+        <a href="/lista.html">Lista</a>
+        <a href="/asignaciones.html">Asignar cursos</a>
+        <span class="spacer"></span>
+        <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+    </nav>
+
+    <header style="margin-bottom:24px">
+        <div class="eyebrow">Hoja de trabajo 1 · CRUD</div>
+        <h1>Lista de <em>estudiantes</em></h1>
+    </header>
+    <div class="card">
+
+        <div class="list-head">
+
+            <h2 style="margin:0">Estudiantes activos</h2>
+
+            <span class="count" id="count">—</span>
+
+        </div>
+
+        <div id="tabla"></div>
+    </div>
+
+    <div id="toast"><span class="check">✓</span><span id="toastMsg"></span></div>
+
+    <script src="/comun.js"></script>
+    <script>
+        const API = '/api/estudiantes';
+
+        async function cargar(){
+            try{
+                const res = await apiFetch(API);
+                const data = await res.json();
+                document.getElementById('count').textContent = data.length + (data.length===1?' estudiante':' estudiantes');
+                const cont = document.getElementById('tabla');
+                if(data.length === 0){ cont.innerHTML = '<div class="empty">Todav\u00eda no hay estudiantes.<br>Registr\u00e1 el primero en la p\u00e1gina Registrar.</div>'; return; }
+                let filas = data.map(e => `
+      <tr>
+        <td class="carnet">${escapar(e.carnet)}</td>
+        <td><div class="nombre">${escapar(e.nombreCompleto)}</div><div class="correo">${escapar(e.correo)}</div></td>
+        <td>${escapar(e.carrera)}</td>
+        <td style="text-align:right"><button class="btn-del" onclick="eliminar(${e.id}, '${escapar(e.nombreCompleto)}')">Eliminar</button></td>
+      </tr>`).join('');
+                cont.innerHTML = `<table><thead><tr><th>Carn\u00e9</th><th>Estudiante</th><th>Carrera</th><th></th></tr></thead><tbody>${filas}</tbody></table>`;
+            }catch(err){ document.getElementById('tabla').innerHTML = '<div class="empty">No se pudo cargar la lista.</div>'; }
+        }
+
+        async function eliminar(id, nombre){
+            if(!confirm('\u00bfEliminar a ' + nombre + '? (baja l\u00f3gica)')) return;
+            try{
+                const res = await apiFetch(API + '/' + id, { method:'DELETE' });
+                if(res.ok){ toast('Estudiante eliminado'); cargar(); }
+                else { toast('No se pudo eliminar.', true); }
+            }catch(err){ toast('Error de conexi\u00f3n con el servidor.', true); }
+        }
+        cargar();
+    </script>
+</body>
+</html>

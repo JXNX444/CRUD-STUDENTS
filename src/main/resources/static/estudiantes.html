@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar estudiante</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+<div class="wrap">
+    <nav class="nav">
+        <a href="/estudiantes.html">Registrar</a>
+        <a href="/lista.html">Lista</a>
+        <a href="/asignaciones.html">Asignar cursos</a>
+        <span class="spacer"></span>
+        <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+    </nav>
+
+    <header style="margin-bottom:24px">
+        <div class="eyebrow">Hoja de trabajo 1 · CRUD</div>
+        <h1>Registrar <em>estudiante</em></h1>
+    </header>
+    <div class="card">
+
+        <h2>Nuevo estudiante</h2>
+
+        <div class="field">
+
+            <label for="carnet">Carné</label>
+
+            <input id="carnet" inputmode="numeric" placeholder="2024001">
+
+            <div class="hint">Solo dígitos, de 6 a 20.</div>
+
+        </div>
+
+        <div class="field">
+
+            <label for="nombre">Nombre completo</label>
+
+            <input id="nombre" placeholder="Juan Pérez">
+
+        </div>
+
+        <div class="field">
+
+            <label for="correo">Correo</label>
+
+            <input id="correo" type="email" placeholder="juan@umg.edu.gt">
+
+        </div>
+
+        <div class="field">
+
+            <label for="telefono">Teléfono</label>
+
+            <input id="telefono" inputmode="numeric" placeholder="55551234">
+
+            <div class="hint">Exactamente 8 dígitos (opcional).</div>
+
+        </div>
+
+        <div class="field">
+
+            <label for="carrera">Carrera</label>
+
+            <select id="carrera">
+
+                <option value="">Cargando carreras…</option>
+
+            </select>
+
+            <div class="hint">Seleccioná una carrera de la lista.</div>
+
+        </div>
+
+        <button class="btn-primary" id="btnGuardar" onclick="registrar()">Registrar estudiante</button>
+
+    </div>
+</div>
+
+<div id="toast"><span class="check">✓</span><span id="toastMsg"></span></div>
+
+<script src="/comun.js"></script>
+<script>
+    const API = '/api/estudiantes';
+    const API_CARRERAS = '/api/carreras';
+
+    async function cargarCarreras(){
+        const sel = document.getElementById('carrera');
+        try{
+            const res = await apiFetch(API_CARRERAS);
+            const carreras = await res.json();
+            sel.innerHTML = '<option value="">Seleccion\u00e1 una carrera</option>' +
+                carreras.map(c => `<option value="${escapar(c.nombre)}">${escapar(c.nombre)}</option>`).join('');
+        }catch(err){ sel.innerHTML = '<option value="">No se pudo cargar el cat\u00e1logo</option>'; }
+    }
+
+    async function registrar(){
+        const estudiante = {
+            carnet: val('carnet'), nombreCompleto: val('nombre'),
+            correo: val('correo'), telefono: val('telefono') || null, carrera: val('carrera')
+        };
+        if(!estudiante.carnet || !estudiante.nombreCompleto || !estudiante.correo || !estudiante.carrera){
+            toast('Complet\u00e1 carn\u00e9, nombre, correo y carrera.', true); return;
+        }
+        const btn = document.getElementById('btnGuardar'); btn.disabled = true;
+        try{
+            const res = await apiFetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(estudiante) });
+            if(res.ok){ toast('Estudiante registrado'); limpiar(); }
+            else if(res.status === 409 || res.status === 500){ toast('Ese carn\u00e9 o correo ya existe.', true); }
+            else { toast('No se pudo registrar (revis\u00e1 los datos).', true); }
+        }catch(err){ toast('Error de conexi\u00f3n con el servidor.', true); }
+        finally{ btn.disabled = false; }
+    }
+
+    function limpiar(){ ['carnet','nombre','correo','telefono','carrera'].forEach(id => document.getElementById(id).value=''); }
+
+    document.querySelectorAll('input').forEach(inp => inp.addEventListener('keydown', e => { if(e.key === 'Enter') registrar(); }));
+    cargarCarreras();
+</script>
+</body>
+</html>

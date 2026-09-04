@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
-\restrict kh4H1RbSjXbwbghmK1gXlz2PN143jOXcdzeAfleHdBqgOavJLZrb3cq3AgOQqeG
+\restrict 1YhFphFGzDvx7RVqxtH41KBxLdZyqY1P7rEpQ9FgulCKq4V1yQhQKV70hNSAvKU
 
--- Dumped from database version 18.4
--- Dumped by pg_dump version 18.4
+-- Dumped from database version 18.6
+-- Dumped by pg_dump version 18.6
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -90,7 +90,7 @@ CREATE TABLE academico.curso (
     created_by integer,
     updated_at timestamp with time zone,
     updated_by integer,
-    CONSTRAINT ck_curso_state CHECK (((state)::text = ANY ((ARRAY['ACTIVO'::character varying, 'INACTIVO'::character varying, 'ELIMINADO'::character varying])::text[])))
+    CONSTRAINT ck_curso_state CHECK (((state)::text = ANY (ARRAY[('ACTIVO'::character varying)::text, ('INACTIVO'::character varying)::text, ('ELIMINADO'::character varying)::text])))
 );
 
 
@@ -128,7 +128,7 @@ CREATE TABLE academico.estudiante (
     updated_at timestamp with time zone,
     updated_by integer,
     CONSTRAINT ck_estudiante_carnet CHECK (((carnet)::text ~ '^[0-9]{6,20}$'::text)),
-    CONSTRAINT ck_estudiante_state CHECK (((state)::text = ANY ((ARRAY['ACTIVO'::character varying, 'INACTIVO'::character varying, 'ELIMINADO'::character varying])::text[]))),
+    CONSTRAINT ck_estudiante_state CHECK (((state)::text = ANY (ARRAY[('ACTIVO'::character varying)::text, ('INACTIVO'::character varying)::text, ('ELIMINADO'::character varying)::text]))),
     CONSTRAINT ck_estudiante_telefono CHECK (((telefono IS NULL) OR ((telefono)::text ~ '^[0-9]{8}$'::text)))
 );
 
@@ -171,7 +171,7 @@ CREATE TABLE academico.inscripcion (
     created_by integer,
     updated_at timestamp with time zone,
     updated_by integer,
-    CONSTRAINT ck_inscripcion_state CHECK (((state)::text = ANY ((ARRAY['ACTIVO'::character varying, 'INACTIVO'::character varying, 'ELIMINADO'::character varying])::text[])))
+    CONSTRAINT ck_inscripcion_state CHECK (((state)::text = ANY (ARRAY[('ACTIVO'::character varying)::text, ('INACTIVO'::character varying)::text, ('ELIMINADO'::character varying)::text])))
 );
 
 
@@ -189,6 +189,41 @@ ALTER TABLE academico.inscripcion ALTER COLUMN inscripcion_id ADD GENERATED ALWA
     NO MAXVALUE
     CACHE 1
 );
+
+
+--
+-- Name: usuarios; Type: TABLE; Schema: academico; Owner: postgres
+--
+
+CREATE TABLE academico.usuarios (
+    id bigint NOT NULL,
+    username character varying(50) NOT NULL,
+    password character varying(255) NOT NULL,
+    rol character varying(20) NOT NULL
+);
+
+
+ALTER TABLE academico.usuarios OWNER TO postgres;
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE; Schema: academico; Owner: postgres
+--
+
+CREATE SEQUENCE academico.usuarios_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE academico.usuarios_id_seq OWNER TO postgres;
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE OWNED BY; Schema: academico; Owner: postgres
+--
+
+ALTER SEQUENCE academico.usuarios_id_seq OWNED BY academico.usuarios.id;
 
 
 --
@@ -218,26 +253,33 @@ ALTER TABLE ONLY academico.carrera ALTER COLUMN carrera_id SET DEFAULT nextval('
 
 
 --
+-- Name: usuarios id; Type: DEFAULT; Schema: academico; Owner: postgres
+--
+
+ALTER TABLE ONLY academico.usuarios ALTER COLUMN id SET DEFAULT nextval('academico.usuarios_id_seq'::regclass);
+
+
+--
 -- Data for Name: carrera; Type: TABLE DATA; Schema: academico; Owner: postgres
 --
 
 COPY academico.carrera (carrera_id, codigo, nombre, facultad, anios_duracion, state, row_version, created_at, created_by, updated_at, updated_by) FROM stdin;
-4	ELN	Ingenieria Electronica	Ingenieria	5	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-5	AMB	Ingenieria en Gestion Ambiental	Ingenieria	5	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-6	ADM	Licenciatura en Administracion de Empresas	Ciencias Economicas	5	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-7	CPA	Licenciatura en Contaduria Publica y Auditoria	Ciencias Economicas	5	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-9	PSI	Licenciatura en Psicologia	Humanidades	5	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-10	MED	Medico y Cirujano	Ciencias Medicas	6	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-11	COM	Licenciatura en Ciencias de la Comunicacion	Humanidades	5	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-12	ARQ	Arquitectura	Arquitectura	5	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-13	MEC	Ingenieria en Mecatronica	Ingenieria	5	ELIMINADO	0	2026-08-08 14:16:45.902364-07	\N	\N	\N
-14	psi	Psicologia d ela ia	psicologia	5	ELIMINADO	0	2026-08-08 14:22:56.997991-07	\N	\N	\N
-15	AN	Analisis de la ia	Analisis	5	ELIMINADO	0	2026-08-08 14:23:49.908522-07	\N	\N	\N
-16	NUT	Licenciatura en Nutricion	Ciencias Medicas	5	ELIMINADO	0	2026-08-08 14:29:10.881329-07	\N	\N	\N
-1	SIS	Ingenieria en Sistemas de Informacion y Ciencias de la Computacion	Ingenieria	5	ACTIVO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-2	IND	Ingenieria Industrial	Ingenieria	5	ACTIVO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-8	DER	Licenciatura en Ciencias Juridicas y Sociales	Ciencias Juridicas	5	ACTIVO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
-3	CIV	Ingenieria Civil	Ingenieria	5	ELIMINADO	0	2026-08-08 13:41:06.060115-07	\N	\N	\N
+4	ELN	Ingenieria Electronica	Ingenieria	5	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+5	AMB	Ingenieria en Gestion Ambiental	Ingenieria	5	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+6	ADM	Licenciatura en Administracion de Empresas	Ciencias Economicas	5	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+7	CPA	Licenciatura en Contaduria Publica y Auditoria	Ciencias Economicas	5	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+9	PSI	Licenciatura en Psicologia	Humanidades	5	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+10	MED	Medico y Cirujano	Ciencias Medicas	6	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+11	COM	Licenciatura en Ciencias de la Comunicacion	Humanidades	5	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+12	ARQ	Arquitectura	Arquitectura	5	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+13	MEC	Ingenieria en Mecatronica	Ingenieria	5	ELIMINADO	0	2026-08-08 15:16:45.902364-06	\N	\N	\N
+14	psi	Psicologia d ela ia	psicologia	5	ELIMINADO	0	2026-08-08 15:22:56.997991-06	\N	\N	\N
+15	AN	Analisis de la ia	Analisis	5	ELIMINADO	0	2026-08-08 15:23:49.908522-06	\N	\N	\N
+16	NUT	Licenciatura en Nutricion	Ciencias Medicas	5	ELIMINADO	0	2026-08-08 15:29:10.881329-06	\N	\N	\N
+1	SIS	Ingenieria en Sistemas de Informacion y Ciencias de la Computacion	Ingenieria	5	ACTIVO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+2	IND	Ingenieria Industrial	Ingenieria	5	ACTIVO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+8	DER	Licenciatura en Ciencias Juridicas y Sociales	Ciencias Juridicas	5	ACTIVO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
+3	CIV	Ingenieria Civil	Ingenieria	5	ELIMINADO	0	2026-08-08 14:41:06.060115-06	\N	\N	\N
 \.
 
 
@@ -246,18 +288,18 @@ COPY academico.carrera (carrera_id, codigo, nombre, facultad, anios_duracion, st
 --
 
 COPY academico.curso (curso_id, codigo, nombre, carrera_id, state, row_version, created_at, created_by, updated_at, updated_by) FROM stdin;
-1	CIV-103	Diseno Estructural	3	ACTIVO	0	2026-08-22 13:33:49.221659-07	\N	\N	\N
-2	CIV-102	Mecanica de Suelos	3	ACTIVO	0	2026-08-22 13:33:49.221659-07	\N	\N	\N
-3	CIV-101	Estatica	3	ACTIVO	0	2026-08-22 13:33:49.221659-07	\N	\N	\N
-4	IND-103	Procesos Industriales	2	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
-5	DER-103	Derecho Constitucional	8	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
-6	SIS-102	Bases de Datos	1	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
-7	IND-101	Investigacion de Operaciones	2	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
-8	DER-102	Derecho Penal	8	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
-9	DER-101	Derecho Civil	8	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
-10	IND-102	Control de Calidad	2	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
-11	SIS-101	Programacion I	1	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
-12	SIS-103	Redes de Computadoras	1	ACTIVO	0	2026-08-22 14:02:02.352282-07	\N	\N	\N
+1	CIV-103	Diseno Estructural	3	ACTIVO	0	2026-08-22 14:33:49.221659-06	\N	\N	\N
+2	CIV-102	Mecanica de Suelos	3	ACTIVO	0	2026-08-22 14:33:49.221659-06	\N	\N	\N
+3	CIV-101	Estatica	3	ACTIVO	0	2026-08-22 14:33:49.221659-06	\N	\N	\N
+4	IND-103	Procesos Industriales	2	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
+5	DER-103	Derecho Constitucional	8	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
+6	SIS-102	Bases de Datos	1	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
+7	IND-101	Investigacion de Operaciones	2	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
+8	DER-102	Derecho Penal	8	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
+9	DER-101	Derecho Civil	8	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
+10	IND-102	Control de Calidad	2	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
+11	SIS-101	Programacion I	1	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
+12	SIS-103	Redes de Computadoras	1	ACTIVO	0	2026-08-22 15:02:02.352282-06	\N	\N	\N
 \.
 
 
@@ -266,11 +308,11 @@ COPY academico.curso (curso_id, codigo, nombre, carrera_id, state, row_version, 
 --
 
 COPY academico.estudiante (estudiante_id, carnet, nombre_completo, correo, telefono, carrera, state, row_version, created_at, created_by, updated_at, updated_by) FROM stdin;
-3	555555644	Juan Perez	juanp@gmail.com	22234567	Inge	ACTIVO	0	2026-08-01 14:18:59.062045-07	\N	\N	\N
-4	6365739	Luis Por	lupo@gmail.com	43167895	Ingenieria	ELIMINADO	1	2026-08-01 14:36:08.548933-07	\N	2026-08-01 14:43:56.054194-07	\N
-1	2024001	Juan Perez	juan@umg.edu.gt	55551234	Ingenieria en Sistemas	ELIMINADO	1	2026-08-01 14:11:17.268596-07	\N	2026-08-08 11:20:52.011324-07	\N
-5	56677743	Jonathan Barrera	jonabarrera1@gmail.com	33175008	Ingenieria en Sistemas de Informacion y Ciencias de la Computacion	ACTIVO	0	2026-08-22 14:04:27.555234-07	\N	\N	\N
-7	656577777	Edy	edy.ramirezc@gmail.com	54456789	Ingenieria en Sistemas de Informacion y Ciencias de la Computacion	ACTIVO	0	2026-08-22 14:06:38.52129-07	\N	\N	\N
+3	555555644	Juan Perez	juanp@gmail.com	22234567	Inge	ACTIVO	0	2026-08-01 15:18:59.062045-06	\N	\N	\N
+4	6365739	Luis Por	lupo@gmail.com	43167895	Ingenieria	ELIMINADO	1	2026-08-01 15:36:08.548933-06	\N	2026-08-01 15:43:56.054194-06	\N
+1	2024001	Juan Perez	juan@umg.edu.gt	55551234	Ingenieria en Sistemas	ELIMINADO	1	2026-08-01 15:11:17.268596-06	\N	2026-08-08 12:20:52.011324-06	\N
+5	56677743	Jonathan Barrera	jonabarrera1@gmail.com	33175008	Ingenieria en Sistemas de Informacion y Ciencias de la Computacion	ACTIVO	0	2026-08-22 15:04:27.555234-06	\N	\N	\N
+7	656577777	Edy	edy.ramirezc@gmail.com	54456789	Ingenieria en Sistemas de Informacion y Ciencias de la Computacion	ACTIVO	0	2026-08-22 15:06:38.52129-06	\N	\N	\N
 \.
 
 
@@ -279,15 +321,24 @@ COPY academico.estudiante (estudiante_id, carnet, nombre_completo, correo, telef
 --
 
 COPY academico.inscripcion (inscripcion_id, estudiante_id, curso_id, fecha_inscripcion, state, row_version, created_at, created_by, updated_at, updated_by) FROM stdin;
-1	5	11	2026-08-22 14:04:47.884511-07	ACTIVO	0	2026-08-22 14:04:47.886523-07	\N	\N	\N
-2	5	6	2026-08-22 14:04:47.896774-07	ACTIVO	0	2026-08-22 14:04:47.896774-07	\N	\N	\N
-3	5	7	2026-08-22 14:04:47.907273-07	ACTIVO	0	2026-08-22 14:04:47.907273-07	\N	\N	\N
-4	5	10	2026-08-22 14:04:47.915221-07	ACTIVO	0	2026-08-22 14:04:47.915221-07	\N	\N	\N
-5	5	9	2026-08-22 14:04:47.92446-07	ACTIVO	0	2026-08-22 14:04:47.92446-07	\N	\N	\N
-6	7	11	2026-08-22 14:07:14.326144-07	ACTIVO	0	2026-08-22 14:07:14.326144-07	\N	\N	\N
-7	7	10	2026-08-22 14:07:14.330846-07	ACTIVO	0	2026-08-22 14:07:14.332857-07	\N	\N	\N
-8	7	5	2026-08-22 14:07:14.337531-07	ACTIVO	0	2026-08-22 14:07:14.337531-07	\N	\N	\N
-9	7	6	2026-08-22 14:07:14.343994-07	ACTIVO	0	2026-08-22 14:07:14.343994-07	\N	\N	\N
+1	5	11	2026-08-22 15:04:47.884511-06	ACTIVO	0	2026-08-22 15:04:47.886523-06	\N	\N	\N
+2	5	6	2026-08-22 15:04:47.896774-06	ACTIVO	0	2026-08-22 15:04:47.896774-06	\N	\N	\N
+3	5	7	2026-08-22 15:04:47.907273-06	ACTIVO	0	2026-08-22 15:04:47.907273-06	\N	\N	\N
+4	5	10	2026-08-22 15:04:47.915221-06	ACTIVO	0	2026-08-22 15:04:47.915221-06	\N	\N	\N
+5	5	9	2026-08-22 15:04:47.92446-06	ACTIVO	0	2026-08-22 15:04:47.92446-06	\N	\N	\N
+6	7	11	2026-08-22 15:07:14.326144-06	ACTIVO	0	2026-08-22 15:07:14.326144-06	\N	\N	\N
+7	7	10	2026-08-22 15:07:14.330846-06	ACTIVO	0	2026-08-22 15:07:14.332857-06	\N	\N	\N
+8	7	5	2026-08-22 15:07:14.337531-06	ACTIVO	0	2026-08-22 15:07:14.337531-06	\N	\N	\N
+9	7	6	2026-08-22 15:07:14.343994-06	ACTIVO	0	2026-08-22 15:07:14.343994-06	\N	\N	\N
+\.
+
+
+--
+-- Data for Name: usuarios; Type: TABLE DATA; Schema: academico; Owner: postgres
+--
+
+COPY academico.usuarios (id, username, password, rol) FROM stdin;
+1	admin	$2a$10$Z4I7OL3C6HhFV8fUR3A5H.0rNMnVnsw7QWUht5wY85ShCMbverF4i	ADMIN
 \.
 
 
@@ -317,6 +368,13 @@ SELECT pg_catalog.setval('academico.estudiante_estudiante_id_seq', 7, true);
 --
 
 SELECT pg_catalog.setval('academico.inscripcion_inscripcion_id_seq', 9, true);
+
+
+--
+-- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: academico; Owner: postgres
+--
+
+SELECT pg_catalog.setval('academico.usuarios_id_seq', 1, true);
 
 
 --
@@ -357,6 +415,22 @@ ALTER TABLE ONLY academico.inscripcion
 
 ALTER TABLE ONLY academico.carrera
     ADD CONSTRAINT uq_carrera_codigo UNIQUE (codigo);
+
+
+--
+-- Name: usuarios usuarios_pkey; Type: CONSTRAINT; Schema: academico; Owner: postgres
+--
+
+ALTER TABLE ONLY academico.usuarios
+    ADD CONSTRAINT usuarios_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: usuarios usuarios_username_key; Type: CONSTRAINT; Schema: academico; Owner: postgres
+--
+
+ALTER TABLE ONLY academico.usuarios
+    ADD CONSTRAINT usuarios_username_key UNIQUE (username);
 
 
 --
@@ -422,5 +496,5 @@ ALTER TABLE ONLY academico.inscripcion
 -- PostgreSQL database dump complete
 --
 
-\unrestrict kh4H1RbSjXbwbghmK1gXlz2PN143jOXcdzeAfleHdBqgOavJLZrb3cq3AgOQqeG
+\unrestrict 1YhFphFGzDvx7RVqxtH41KBxLdZyqY1P7rEpQ9FgulCKq4V1yQhQKV70hNSAvKU
 
