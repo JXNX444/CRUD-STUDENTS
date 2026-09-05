@@ -6,161 +6,167 @@
     <title>Asignar cursos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/estilos.css">
 </head>
 <body>
-<div class="wrap">
-    <nav class="nav">
-        <a href="/estudiantes.html">Registrar</a>
-        <a href="/lista.html">Lista</a>
-        <a href="/asignaciones.html">Asignar cursos</a>
-        <span class="spacer"></span>
-        <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
-    </nav>
-
-    <header style="margin-bottom:24px">
-        <div class="eyebrow">Hoja de trabajo 1 · CRUD</div>
-        <h1>Asignar <em>cursos</em></h1>
-    </header>
-    <div class="card" style="margin-top:24px">
-
-        <h2>Asignar cursos a un estudiante</h2>
-
-        <p class="sub" style="margin:0 0 18px">Elegí un estudiante, después agregá cursos de las carreras que quieras (máximo 3 carreras). Al asignar, se le envía un correo con el listado agrupado por carrera.</p>
-
-        <div class="asig-grid">
-
-            <div class="field" style="margin:0">
-
-                <label for="asigEstudiante">Estudiante</label>
-
-                <select id="asigEstudiante"><option value="">Cargando…</option></select>
-
+<div class="shell">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="book-logo sm">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="oklch(85% 0.13 145)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5c-2.6-1.5-5.6-1.7-8-.6v13.6c2.4-1.1 5.4-.9 8 .6z"></path><path d="M12 5c2.6-1.5 5.6-1.7 8-.6v13.6c-2.4-1.1-5.4-.9-8 .6z"></path><line x1="12" y1="5" x2="12" y2="18.6"></line></svg>
             </div>
-
-            <div class="field" style="margin:0">
-
-                <label for="asigCarrera">Carrera</label>
-
-                <select id="asigCarrera"><option value="">Cargando…</option></select>
-
-            </div>
-
+            <div class="brand-name">Kampus</div>
         </div>
+        <nav class="sidebar-nav">
+            <a href="/estudiantes.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"></circle><path d="M2.5 20c0-3.4 2.9-5.6 6.5-5.6s6.5 2.2 6.5 5.6"></path><line x1="18.5" y1="7.5" x2="18.5" y2="13.5"></line><line x1="15.5" y1="10.5" x2="21.5" y2="10.5"></line></svg>Registrar</a>
+            <a href="/lista.html"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="4.2" cy="6" r="1"></circle><circle cx="4.2" cy="12" r="1"></circle><circle cx="4.2" cy="18" r="1"></circle><line x1="9" y1="6" x2="21" y2="6"></line><line x1="9" y1="12" x2="21" y2="12"></line><line x1="9" y1="18" x2="21" y2="18"></line></svg>Lista</a>
+            <a href="/asignaciones.html" class="activo"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5c2.6-1.3 5.2-1.3 7 0v13c-1.8-1.3-4.4-1.3-7 0z"></path><path d="M20 5.5c-2.6-1.3-5.2-1.3-7 0v13c1.8-1.3 4.4-1.3 7 0z"></path></svg>Asignar cursos</a>
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <button class="btn-logout" onclick="cerrarSesion()">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H5.5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2H9"></path><line x1="14.5" y1="12" x2="21" y2="12"></line><path d="M17.5 8.5l3.5 3.5-3.5 3.5"></path></svg>
+            Cerrar sesión
+        </button>
+    </aside>
 
-        <div id="preview" class="preview"></div>
+    <main class="content">
+        <div class="screen">
+            <div class="eyebrow">Hoja de trabajo 1 · CRUD</div>
+            <h1>Asignar <em>cursos</em></h1>
+            <p class="sub">Elegí un estudiante, después agregá cursos de las carreras que quieras (máximo 3 carreras). Al asignar, se le envía un correo con el listado agrupado por carrera.</p>
 
-        <div id="seleccionados" class="cart"></div>
+            <div class="card">
+                <div class="field-row" style="margin-bottom:20px">
+                    <div class="field" style="margin:0">
+                        <label for="asigEstudiante">Estudiante</label>
+                        <select id="asigEstudiante"><option value="">Cargando…</option></select>
+                    </div>
+                    <div class="field" style="margin:0">
+                        <label for="asigCarrera">Carrera</label>
+                        <select id="asigCarrera"><option value="">Cargando…</option></select>
+                    </div>
+                </div>
 
-        <button class="btn-primary" id="btnAsignar" onclick="asignar()">Asignar cursos seleccionados y enviar correo</button>
-    </div>
+                <div id="preview" class="preview"></div>
+                <div id="seleccionados" class="cart"></div>
 
-    <div id="toast"><span class="check">✓</span><span id="toastMsg"></span></div>
+                <button class="btn-primary" id="btnAsignar" onclick="asignar()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+                    Asignar cursos seleccionados y enviar correo
+                </button>
+            </div>
+        </div>
+    </main>
+</div>
 
-    <script src="/comun.js"></script>
-    <script>
-        async function cargarEstudiantes(){
-            const sel = document.getElementById('asigEstudiante');
-            try{
-                const res = await apiFetch('/api/estudiantes');
-                const data = await res.json();
-                if(!data.length){ sel.innerHTML = '<option value="">No hay estudiantes</option>'; return; }
-                sel.innerHTML = '<option value="">Seleccion\u00e1 un estudiante</option>' +
-                    data.map(e => `<option value="${e.id}">${escapar(e.nombreCompleto)} \u2014 ${escapar(e.carnet)}</option>`).join('');
-            }catch(err){ sel.innerHTML = '<option value="">No se pudo cargar</option>'; }
+<div id="toast"><span class="check">✓</span><span id="toastMsg"></span></div>
+
+<script src="/comun.js"></script>
+<script>
+    async function cargarEstudiantes(){
+        const sel = document.getElementById('asigEstudiante');
+        try{
+            const res = await apiFetch('/api/estudiantes');
+            const data = await res.json();
+            if(!data.length){ sel.innerHTML = '<option value="">No hay estudiantes</option>'; return; }
+            sel.innerHTML = '<option value="">Seleccion\u00e1 un estudiante</option>' +
+                data.map(e => `<option value="${e.id}">${escapar(e.nombreCompleto)} \u2014 ${escapar(e.carnet)}</option>`).join('');
+        }catch(err){ sel.innerHTML = '<option value="">No se pudo cargar</option>'; }
+    }
+
+    async function cargarCarreras(){
+        const selA = document.getElementById('asigCarrera');
+        try{
+            const res = await apiFetch('/api/carreras');
+            const carreras = await res.json();
+            selA.innerHTML = '<option value="">Seleccion\u00e1 una carrera</option>' +
+                carreras.map(c => `<option value="${c.id}">${escapar(c.nombre)}</option>`).join('');
+        }catch(err){ selA.innerHTML = '<option value="">No se pudo cargar</option>'; }
+    }
+
+    let cursosActuales = [];
+    let seleccion = [];
+
+    async function previewCursos(){
+        const carreraId = document.getElementById('asigCarrera').value;
+        const box = document.getElementById('preview');
+        if(!carreraId){ box.innerHTML=''; cursosActuales=[]; return; }
+        try{
+            const res = await apiFetch(`/api/carreras/${carreraId}/cursos`);
+            cursosActuales = await res.json();
+            renderPreview();
+        }catch(err){ box.innerHTML=''; cursosActuales=[]; }
+    }
+
+    function renderPreview(){
+        const box = document.getElementById('preview');
+        if(!cursosActuales.length){ box.innerHTML = '<div class="preview-empty">Esta carrera no tiene cursos cargados.</div>'; return; }
+        box.innerHTML = '<div class="preview-title">Cursos de esta carrera (agreg\u00e1 los que quieras)</div>' +
+            cursosActuales.map(c => {
+                const yaEsta = seleccion.some(x => x.id === c.id);
+                return `<div class="preview-item">
+                <span class="pi-cod">${escapar(c.codigo)}</span>
+                <span style="flex:1">${escapar(c.nombre)}</span>
+                <button class="btn-add" ${yaEsta?'disabled':''} onclick="agregarCurso(${c.id})">
+                  ${yaEsta ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg> Agregado' : '+ Agregar'}
+                </button>
+            </div>`;
+            }).join('');
+    }
+
+    function agregarCurso(id){
+        const curso = cursosActuales.find(c => c.id === id);
+        if(!curso) return;
+        if(seleccion.some(x => x.id === id)) return;
+        const carrerasElegidas = new Set(seleccion.map(c => c.carreraId));
+        if(!carrerasElegidas.has(curso.carreraId) && carrerasElegidas.size >= 3){
+            toast('M\u00e1ximo 3 carreras. Quit\u00e1 cursos de otra carrera para agregar de una nueva.', true); return;
         }
+        seleccion.push({ id: curso.id, codigo: curso.codigo, nombre: curso.nombre, carreraId: curso.carreraId });
+        renderPreview(); renderSeleccion();
+    }
 
-        async function cargarCarreras(){
-            const selA = document.getElementById('asigCarrera');
-            try{
-                const res = await apiFetch('/api/carreras');
-                const carreras = await res.json();
-                selA.innerHTML = '<option value="">Seleccion\u00e1 una carrera</option>' +
-                    carreras.map(c => `<option value="${c.id}">${escapar(c.nombre)}</option>`).join('');
-            }catch(err){ selA.innerHTML = '<option value="">No se pudo cargar</option>'; }
+    function quitarCurso(id){ seleccion = seleccion.filter(c => c.id !== id); renderPreview(); renderSeleccion(); }
+
+    function renderSeleccion(){
+        const box = document.getElementById('seleccionados');
+        if(!seleccion.length){
+            box.innerHTML = '<div class="cart-title">Cursos seleccionados (0)</div><div class="cart-empty">Todav\u00eda no agregaste cursos. Eleg\u00ed una carrera y toc\u00e1 \u201c+ Agregar\u201d.</div>';
+            return;
         }
+        const nCarreras = new Set(seleccion.map(c => c.carreraId)).size;
+        box.innerHTML = `<div class="cart-title">Cursos seleccionados (${seleccion.length}) \u00b7 ${nCarreras}/3 carreras</div>` +
+            seleccion.map(c => `<span class="chip"><span class="chip-cod">${escapar(c.codigo)}</span>${escapar(c.nombre)}<button title="Quitar" onclick="quitarCurso(${c.id})">\u00d7</button></span>`).join('');
+    }
 
-        let cursosActuales = [];
-        let seleccion = [];
-
-        async function previewCursos(){
-            const carreraId = document.getElementById('asigCarrera').value;
-            const box = document.getElementById('preview');
-            if(!carreraId){ box.innerHTML=''; cursosActuales=[]; return; }
-            try{
-                const res = await apiFetch(`/api/carreras/${carreraId}/cursos`);
-                cursosActuales = await res.json();
-                renderPreview();
-            }catch(err){ box.innerHTML=''; cursosActuales=[]; }
-        }
-
-        function renderPreview(){
-            const box = document.getElementById('preview');
-            if(!cursosActuales.length){ box.innerHTML = '<div class="preview-empty">Esta carrera no tiene cursos cargados.</div>'; return; }
-            box.innerHTML = '<div class="preview-title">Cursos de esta carrera (agreg\u00e1 los que quieras)</div>' +
-                cursosActuales.map(c => {
-                    const yaEsta = seleccion.some(x => x.id === c.id);
-                    return `<div class="preview-item">
-                    <span class="pi-cod">${escapar(c.codigo)}</span>
-                    <span style="flex:1">${escapar(c.nombre)}</span>
-                    <button class="btn-add" ${yaEsta?'disabled':''} onclick="agregarCurso(${c.id})">${yaEsta?'Agregado':'+ Agregar'}</button>
-                </div>`;
-                }).join('');
-        }
-
-        function agregarCurso(id){
-            const curso = cursosActuales.find(c => c.id === id);
-            if(!curso) return;
-            if(seleccion.some(x => x.id === id)) return;
-            const carrerasElegidas = new Set(seleccion.map(c => c.carreraId));
-            if(!carrerasElegidas.has(curso.carreraId) && carrerasElegidas.size >= 3){
-                toast('M\u00e1ximo 3 carreras. Quit\u00e1 cursos de otra carrera para agregar de una nueva.', true); return;
+    async function asignar(){
+        const estudianteId = document.getElementById('asigEstudiante').value;
+        if(!estudianteId){ toast('Eleg\u00ed un estudiante.', true); return; }
+        if(!seleccion.length){ toast('Agreg\u00e1 al menos un curso.', true); return; }
+        const btn = document.getElementById('btnAsignar');
+        const htmlOriginal = btn.innerHTML;
+        btn.disabled = true; btn.textContent = 'Asignando y enviando correo\u2026';
+        try{
+            const res = await apiFetch('/api/asignaciones', {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({ estudianteId: Number(estudianteId), cursoIds: seleccion.map(c => c.id) })
+            });
+            if(res.ok){
+                const cursos = await res.json();
+                toast(`Se asignaron ${cursos.length} cursos y se envi\u00f3 el correo.`);
+                seleccion = []; renderPreview(); renderSeleccion();
+            }else{
+                let msg = 'No se pudo asignar.';
+                try{ const b = await res.json(); if(b && b.message) msg = b.message; }catch(e){}
+                toast(msg, true);
             }
-            seleccion.push({ id: curso.id, codigo: curso.codigo, nombre: curso.nombre, carreraId: curso.carreraId });
-            renderPreview(); renderSeleccion();
-        }
+        }catch(err){ toast('Error de conexi\u00f3n con el servidor.', true); }
+        finally{ btn.disabled = false; btn.innerHTML = htmlOriginal; }
+    }
 
-        function quitarCurso(id){ seleccion = seleccion.filter(c => c.id !== id); renderPreview(); renderSeleccion(); }
-
-        function renderSeleccion(){
-            const box = document.getElementById('seleccionados');
-            if(!seleccion.length){
-                box.innerHTML = '<div class="cart-title">Cursos seleccionados (0)</div><div class="cart-empty">Todav\u00eda no agregaste cursos. Eleg\u00ed una carrera y toc\u00e1 \u201c+ Agregar\u201d.</div>';
-                return;
-            }
-            const nCarreras = new Set(seleccion.map(c => c.carreraId)).size;
-            box.innerHTML = `<div class="cart-title">Cursos seleccionados (${seleccion.length}) \u00b7 ${nCarreras}/3 carreras</div>` +
-                seleccion.map(c => `<span class="chip"><span class="chip-cod">${escapar(c.codigo)}</span>${escapar(c.nombre)}<button title="Quitar" onclick="quitarCurso(${c.id})">\u00d7</button></span>`).join('');
-        }
-
-        async function asignar(){
-            const estudianteId = document.getElementById('asigEstudiante').value;
-            if(!estudianteId){ toast('Eleg\u00ed un estudiante.', true); return; }
-            if(!seleccion.length){ toast('Agreg\u00e1 al menos un curso.', true); return; }
-            const btn = document.getElementById('btnAsignar');
-            const textoOriginal = btn.textContent;
-            btn.disabled = true; btn.textContent = 'Asignando y enviando correo\u2026';
-            try{
-                const res = await apiFetch('/api/asignaciones', {
-                    method:'POST', headers:{'Content-Type':'application/json'},
-                    body: JSON.stringify({ estudianteId: Number(estudianteId), cursoIds: seleccion.map(c => c.id) })
-                });
-                if(res.ok){
-                    const cursos = await res.json();
-                    toast(`Se asignaron ${cursos.length} cursos y se envi\u00f3 el correo.`);
-                    seleccion = []; renderPreview(); renderSeleccion();
-                }else{
-                    let msg = 'No se pudo asignar.';
-                    try{ const b = await res.json(); if(b && b.message) msg = b.message; }catch(e){}
-                    toast(msg, true);
-                }
-            }catch(err){ toast('Error de conexi\u00f3n con el servidor.', true); }
-            finally{ btn.disabled = false; btn.textContent = textoOriginal; }
-        }
-
-        document.getElementById('asigCarrera').addEventListener('change', previewCursos);
-        renderSeleccion(); cargarEstudiantes(); cargarCarreras();
-    </script>
+    document.getElementById('asigCarrera').addEventListener('change', previewCursos);
+    renderSeleccion(); cargarEstudiantes(); cargarCarreras();
+</script>
 </body>
 </html>

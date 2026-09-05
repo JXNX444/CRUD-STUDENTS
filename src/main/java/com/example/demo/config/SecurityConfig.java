@@ -27,15 +27,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                // Sin sesiones: cada peticion se valida por el token.
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Publico: pagina de login y sus endpoints.
+                        // Publico: login, sus endpoints y errores.
                         .requestMatchers("/login.html", "/api/auth/**", "/error").permitAll()
+                        // Publico: archivos estaticos (estilos, scripts, imagenes).
+                        .requestMatchers("/*.css", "/*.js", "/*.png", "/*.svg", "/*.ico").permitAll()
                         // Todo lo demas requiere token.
                         .anyRequest().authenticated()
                 )
-                // Si no hay token valido: la API responde 401; el navegador va al login.
                 .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, e) -> {
                     String uri = request.getRequestURI();
                     if (uri.startsWith("/api/")) {
@@ -44,7 +44,6 @@ public class SecurityConfig {
                         response.sendRedirect("/login.html");
                     }
                 }))
-                // Nuestro filtro de token se ejecuta antes del de login por defecto.
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -55,7 +54,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Crea el usuario admin de prueba al arrancar, si no existe.
     @Bean
     public CommandLineRunner crearAdmin(UsuarioRepository repo, PasswordEncoder encoder) {
         return args -> {

@@ -37,7 +37,7 @@ function escapar(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<'
 
 // Marca el link activo del menu segun la pagina actual
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.nav a').forEach(a => {
+    document.querySelectorAll('.sidebar-nav a').forEach(a => {
         if(a.getAttribute('href') === location.pathname) a.classList.add('activo');
     });
 });
