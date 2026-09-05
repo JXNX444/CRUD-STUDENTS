@@ -2,8 +2,11 @@ package com.example.demo.estudiante;
 
 import com.example.demo.common.EstadoRegistro;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +23,12 @@ public interface EstudianteRepository extends JpaRepository<Estudiante, Integer>
 
     /** Busca un estudiante por id, siempre que NO este eliminado. */
     Optional<Estudiante> findByIdAndStateNot(Integer id, EstadoRegistro state);
+
+    /** Reporte paginado: filtra por facultad, rango de fecha_ingreso y excluye eliminados. */
+    Page<Estudiante> findByFacultadAndFechaIngresoBetweenAndStateNot(
+            Facultad facultad,
+            LocalDate inicio,
+            LocalDate fin,
+            EstadoRegistro state,
+            Pageable pageable);
 }

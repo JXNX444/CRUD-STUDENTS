@@ -4,10 +4,14 @@ import com.example.demo.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import java.time.LocalDate;
 
 /**
  * Entidad Estudiante. Mapea la tabla academico.estudiante.
@@ -36,6 +40,13 @@ public class Estudiante extends BaseEntity {
 
     @Column(name = "carrera", nullable = false, length = 100)
     private String carrera;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "facultad", nullable = false, length = 40)
+    private Facultad facultad;
+
+    @Column(name = "fecha_ingreso", nullable = false)
+    private LocalDate fechaIngreso;
 
     // ---- Getters / Setters ----
 
@@ -85,5 +96,21 @@ public class Estudiante extends BaseEntity {
 
     public void setCarrera(String carrera) {
         this.carrera = carrera;
+    }
+
+    public Facultad getFacultad() {
+        return facultad;
+    }
+
+    public void setFacultad(Facultad facultad) {
+        this.facultad = facultad;
+    }
+
+    public LocalDate getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(LocalDate fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
     }
 }
